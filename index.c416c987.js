@@ -1,0 +1,2 @@
+let e,t={key1:"value1"};var r=Object.freeze(new class{getState(){return t}getPropertyByName(e){return t[e]}setPropertyValue(e,r){t[e]=r}writeToLocalStorage(){localStorage.setItem("globalState",JSON.stringify(t))}constructor(){if(e)throw new Error("New instance cannot be created!!");e=this}});r.setPropertyValue("addedProp","some value"),console.log(r.getPropertyByName("addedProp")),console.log(r.getPropertyByName("key1")),console.log(r.getPropertyByName("name2")),r.writeToLocalStorage();
+//# sourceMappingURL=index.c416c987.js.map
