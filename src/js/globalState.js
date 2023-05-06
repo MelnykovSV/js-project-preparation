@@ -1,7 +1,17 @@
 let instance;
 
-let globalState = {
-  key1: 'value1',
+let globalStateObject = {
+  favourite: [
+    { title: 'title1', test: 'text1' },
+    { title: 'title2', test: 'text2' },
+    { title: 'title3', test: 'text3' },
+  ],
+  read: [
+    { title: 'title1', test: 'text1' },
+    { title: 'title2', test: 'text2' },
+    { title: 'title3', test: 'text3' },
+  ],
+  theme: 'dark',
 };
 
 class StateUtility {
@@ -13,22 +23,34 @@ class StateUtility {
     instance = this;
   }
 
-  getState() {
-    return globalState;
+  get() {
+    return globalStateObject;
   }
 
-  getPropertyByName(name) {
-    return globalState[name];
+  favourites() {
+    return globalStateObject.favourites;
+  }
+  read() {
+    return globalStateObject.read;
+  }
+  theme() {
+    return globalStateObject.read;
   }
 
-  setPropertyValue(name, value) {
-    globalState[name] = value;
+  setFavourites(value) {
+    globalStateObject.favourites = value;
+  }
+  setRead(value) {
+    globalStateObject.read = value;
+  }
+  setTheme(value) {
+    globalStateObject.theme = value;
   }
 
   writeToLocalStorage() {
-    localStorage.setItem('globalState', JSON.stringify(globalState));
+    localStorage.setItem('globalState', JSON.stringify(globalStateObject));
   }
 }
 
-let stateUtilityInstance = Object.freeze(new StateUtility());
-export default stateUtilityInstance;
+let globalState = Object.freeze(new StateUtility());
+export default globalState;
