@@ -11,7 +11,7 @@ let globalStateObject = {
     { title: 'title2', test: 'text2' },
     { title: 'title3', test: 'text3' },
   ],
-  theme: 'dark',
+  theme: 'light',
 };
 
 class StateUtility {

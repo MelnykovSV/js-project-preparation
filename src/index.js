@@ -1,6 +1,10 @@
 import globalState from './js/globalState';
 
-import authUtils from './js/firebase';
+import authUtils from './js/firebaseAuth';
+
+import databaseUtils from './js/firebaseDatabase';
+
+import './js/firebaseDatabase';
 
 const authComponent = document.querySelector('.auth-component');
 const signUpForm = document.querySelector('.sign-up-form');
@@ -24,4 +28,4 @@ authComponent.addEventListener('click', e => {
   }
 });
 
-// testButton.addEventListener('click', authUtils.getCurrentUser);
+testButton.addEventListener('click', databaseUtils.getUserData);

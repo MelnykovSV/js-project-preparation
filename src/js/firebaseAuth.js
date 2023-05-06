@@ -10,14 +10,20 @@ import {
   signOut,
   updateProfile,
 } from 'firebase/auth';
+
+import { getDatabase } from 'firebase/database';
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
 const firebaseConfig = {
   apiKey: 'AIzaSyAdDj9F_jubuCOC76pSoibdy_DVCdFqGhQ',
   authDomain: 'js-project-preparation.firebaseapp.com',
+  databaseURL:
+    'https://js-project-preparation-default-rtdb.europe-west1.firebasedatabase.app',
   projectId: 'js-project-preparation',
   storageBucket: 'js-project-preparation.appspot.com',
   messagingSenderId: '476626012391',
@@ -123,22 +129,31 @@ class FirebaseAuth {
     });
   }
 
-  //   async getCurrentUser() {
-  //     console.log(auth.currentUser);
-  //     const updatedProfile = await updateProfile(auth.currentUser, {
-  //       someValue: 'azazaza',
+  // async getCurrentUser() {
+  //   console.log(auth.currentUser);
+  //   const updatedProfile = await updateProfile(auth.currentUser, {
+  //     someValue: 'azazaza',
+  //   })
+  //     .then(() => {
+  //       // Profile updated!
+  //       // ...
+  //       console.log(auth.currentUser);
   //     })
-  //       .then(() => {
-  //         // Profile updated!
-  //         // ...
-  //         console.log(auth.currentUser);
-  //       })
-  //       .catch(error => {
-  //         // An error occurred
-  //         // ...
-  //       });
-  //     return updatedProfile;
-  //   }
+  //     .catch(error => {
+  //       // An error occurred
+  //       // ...
+  //     });
+  //   return updatedProfile;
+  // }
+
+  getCurrentUserId() {
+    const user = auth.currentUser;
+    if (user !== null) {
+      console.log('get id');
+      console.log(user);
+      return user.uid;
+    }
+  }
 }
 
 const authUtils = new FirebaseAuth();
