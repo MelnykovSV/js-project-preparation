@@ -4,7 +4,7 @@ import { INITIAL_STATE_VALUE } from '../constants';
 
 let instance;
 
-let globalStateObject = INITIAL_STATE_VALUE;
+let globalStateObject = JSON.parse(JSON.stringify(INITIAL_STATE_VALUE));
 
 class StateUtility {
   constructor() {
@@ -20,7 +20,10 @@ class StateUtility {
   }
 
   set(value) {
-    globalStateObject = value;
+    globalStateObject = JSON.parse(JSON.stringify(value));
+    console.log('SET');
+    console.log(globalStateObject);
+    this.saveData();
   }
 
   favourite() {
@@ -40,9 +43,11 @@ class StateUtility {
 
   setRead(value) {
     globalStateObject.read = value;
+    this.saveData();
   }
   setTheme(value) {
     globalStateObject.theme = value;
+    this.saveData();
   }
 
   writeToLocalStorage() {

@@ -53,7 +53,12 @@ class FirebaseAuth {
       .then(userCredential => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);
+        // console.log(user);
+        // this.getInitialState();
+        // console.log('INITIAL_STATE_VALUE');
+        // console.log(INITIAL_STATE_VALUE);
+        // globalState.set(INITIAL_STATE_VALUE);
+        // console.log(globalState.get());
       })
       .catch(error => {
         const errorCode = error.code;
@@ -79,7 +84,15 @@ class FirebaseAuth {
         // Signed in
         const user = userCredential.user;
         console.log('signed in');
+        // this.getInitialState();
         // ...
+        databaseUtils.getUserData().then(data => {
+          if (data) {
+            globalState.set(data);
+          } else {
+            globalState.set(INITIAL_STATE_VALUE);
+          }
+        });
       })
       .catch(error => {
         const errorCode = error.code;
@@ -97,6 +110,13 @@ class FirebaseAuth {
       .then(() => {
         // Sign-out successful.
         console.log('Sign-out successful');
+        if (localStorage.getItem('globalState')) {
+          globalState.set(JSON.parse(localStorage.getItem('globalState')));
+        } else {
+          globalState.set(INITIAL_STATE_VALUE);
+
+          globalState.writeToLocalStorage();
+        }
       })
       .catch(error => {
         // An error happened.
@@ -111,7 +131,13 @@ class FirebaseAuth {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         const uid = user.uid;
-        // console.log(user);
+        databaseUtils.getUserData().then(data => {
+          if (data) {
+            globalState.set(data);
+          } else {
+            globalState.set(INITIAL_STATE_VALUE);
+          }
+        });
         authComponent.querySelector(
           '.auth-component__user-email'
         ).textContent = `${user.email}`;
@@ -121,6 +147,12 @@ class FirebaseAuth {
         // ...
       } else {
         // User is signed out
+        if (localStorage.getItem('globalState')) {
+          globalState.set(JSON.parse(localStorage.getItem('globalState')));
+        } else {
+          globalState.set(INITIAL_STATE_VALUE);
+          globalState.writeToLocalStorage();
+        }
 
         console.log('user signied out');
 
@@ -142,28 +174,28 @@ class FirebaseAuth {
     });
   }
 
-  getInitialState() {
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        databaseUtils.getUserData().then(data => {
-          if (data) {
-            globalState.set(data);
-          } else {
-            globalState.set(INITIAL_STATE_VALUE);
-          }
-        });
+  // getInitialState() {
+  //   onAuthStateChanged(auth, user => {
+  //     if (user) {
+  //       databaseUtils.getUserData().then(data => {
+  //         if (data) {
+  //           globalState.set(data);
+  //         } else {
+  //           globalState.set(INITIAL_STATE_VALUE);
+  //         }
+  //       });
 
-        // return stateData;
-      } else {
-        if (localStorage.getItem('globalState')) {
-          globalState.set(JSON.parse(localStorage.getItem('globalState')));
-        } else {
-          globalState.set(INITIAL_STATE_VALUE);
-          globalState.writeToLocalStorage();
-        }
-      }
-    });
-  }
+  //       // return stateData;
+  //     } else {
+  //       if (localStorage.getItem('globalState')) {
+  //         globalState.set(JSON.parse(localStorage.getItem('globalState')));
+  //       } else {
+  //         globalState.set(INITIAL_STATE_VALUE);
+  //         globalState.writeToLocalStorage();
+  //       }
+  //     }
+  //   });
+  // }
 
   // async getCurrentUser() {
   //   console.log(auth.currentUser);

@@ -14,7 +14,7 @@ const testButton = document.querySelector('.test-button');
 const stateButton = document.querySelector('.state-button');
 
 authUtils.checkUserStatus();
-authUtils.getInitialState();
+// authUtils.getInitialState();
 
 signUpForm.addEventListener('submit', authUtils.signUp);
 signInForm.addEventListener('submit', authUtils.signIn);
@@ -31,7 +31,7 @@ authComponent.addEventListener('click', e => {
 });
 
 testButton.addEventListener('click', () => {
-  databaseUtils.writeUserData();
+  authUtils.getCurrentUserId();
 });
 stateButton.addEventListener('click', () => {
   console.log(globalState.get());

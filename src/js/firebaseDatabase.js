@@ -3,6 +3,7 @@ import { getDatabase, ref, set, onValue, child, get } from 'firebase/database';
 import globalState from './globalState';
 
 import authUtils from './firebaseAuth';
+import { INITIAL_STATE_VALUE } from '../constants';
 
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
@@ -37,6 +38,9 @@ class FirebaseDatabase {
 
     const data = globalState.get();
 
+    console.log('WRITTEN DATA');
+    console.log(data);
+
     const db = getDatabase();
     set(ref(db, 'users/' + userId), data);
   }
@@ -48,8 +52,11 @@ class FirebaseDatabase {
     const data = await get(ref(db, 'users/' + userId))
       .then(snapshot => {
         if (snapshot.exists()) {
+          console.log(`READ DATA FROM: ${userId}`);
           console.log(snapshot.val());
-          return snapshot.val();
+
+          const result = { ...INITIAL_STATE_VALUE, ...snapshot.val() };
+          return result;
         } else {
           console.log('No data available');
         }
