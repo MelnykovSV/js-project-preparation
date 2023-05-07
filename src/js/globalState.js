@@ -1,18 +1,25 @@
+import databaseUtils from './firebaseDatabase';
+import authUtils from './firebaseAuth';
+
 let instance;
 
 let globalStateObject = {
-  favourite: [
-    { title: 'title1', test: 'text1' },
-    { title: 'title2', test: 'text2' },
-    { title: 'title3', test: 'text3' },
-  ],
-  read: [
-    { title: 'title1', test: 'text1' },
-    { title: 'title2', test: 'text2' },
-    { title: 'title3', test: 'text3' },
-  ],
-  theme: 'light',
+  // favourite: [
+  //   { title: 'title1', test: 'text1' },
+  //   { title: 'title2', test: 'text2' },
+  //   { title: 'title3', test: 'text3' },
+  // ],
+  // read: [
+  //   { title: 'title1', test: 'text1' },
+  //   { title: 'title2', test: 'text2' },
+  //   { title: 'title3', test: 'text3' },
+  // ],
+  // theme: 'light',
 };
+
+// databaseUtils.getUserData().then(data => {
+//   globalStateObject = data;
+// });
 
 class StateUtility {
   constructor() {
@@ -25,6 +32,10 @@ class StateUtility {
 
   get() {
     return globalStateObject;
+  }
+
+  set(value) {
+    globalStateObject = value;
   }
 
   favourites() {

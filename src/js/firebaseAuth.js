@@ -11,7 +11,7 @@ import {
   updateProfile,
 } from 'firebase/auth';
 
-import { getDatabase } from 'firebase/database';
+import databaseUtils from './firebaseDatabase';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -125,6 +125,29 @@ class FirebaseAuth {
 
         authComponent.classList.add('signed-out');
         // ...
+      }
+    });
+  }
+
+  getInitialState() {
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        databaseUtils.getUserData().then(data => {
+          if (data) {
+            globalState.set(data);
+          } else {
+            globalState.set({ data: 'some initial data' });
+          }
+        });
+
+        // return stateData;
+      } else {
+        if (localStorage.getItem('globalState')) {
+          globalState.set(localStorage.getItem('globalState'));
+        } else {
+          globalState.set({ theme: 'dark' });
+          globalState.writeToLocalStorage();
+        }
       }
     });
   }

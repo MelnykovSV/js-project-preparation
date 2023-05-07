@@ -11,8 +11,10 @@ const signUpForm = document.querySelector('.sign-up-form');
 const signInForm = document.querySelector('.sign-in-form');
 
 const testButton = document.querySelector('.test-button');
+const stateButton = document.querySelector('.state-button');
 
 authUtils.checkUserStatus();
+authUtils.getInitialState();
 
 signUpForm.addEventListener('submit', authUtils.signUp);
 signInForm.addEventListener('submit', authUtils.signIn);
@@ -29,3 +31,6 @@ authComponent.addEventListener('click', e => {
 });
 
 testButton.addEventListener('click', databaseUtils.getUserData);
+stateButton.addEventListener('click', () => {
+  console.log(globalState.get());
+});

@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, set, onValue, get } from 'firebase/database';
+import { getDatabase, ref, set, onValue, child, get } from 'firebase/database';
 import globalState from './globalState';
 
 import authUtils from './firebaseAuth';
@@ -24,12 +24,12 @@ const app = initializeApp(firebaseConfig);
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
 
-function writeUserData(userId, data) {
-  const db = getDatabase();
-  set(ref(db, 'users/' + userId), data);
-}
+// function writeUserData(userId, data) {
+//   const db = getDatabase();
+//   set(ref(db, 'users/' + userId), data);
+// }
 
-writeUserData('k0Nkd7t83eNBhYRVJ8fLodvqv1X2', globalState.get());
+// writeUserData('k0Nkd7t83eNBhYRVJ8fLodvqv1X2', globalState.get());
 
 class FirebaseDatabase {
   writeUserData() {
@@ -41,16 +41,23 @@ class FirebaseDatabase {
     set(ref(db, 'users/' + userId), data);
   }
 
-  getUserData() {
+  async getUserData() {
     const userId = authUtils.getCurrentUserId();
     const db = getDatabase();
-    const starCountRef = ref(db, 'users/' + userId);
 
-    onValue(starCountRef, snapshot => {
-      const data = snapshot;
-      console.log(snapshot);
-      //   updateStarCount(postElement, data);
-    });
+    const data = await get(ref(db, 'users/' + userId))
+      .then(snapshot => {
+        if (snapshot.exists()) {
+          console.log(snapshot.val());
+          return snapshot.val();
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    return data;
   }
 }
 
