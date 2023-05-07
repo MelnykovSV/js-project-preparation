@@ -12,6 +12,7 @@ import {
 } from 'firebase/auth';
 
 import databaseUtils from './firebaseDatabase';
+import { INITIAL_STATE_VALUE } from '../constants';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -129,6 +130,18 @@ class FirebaseAuth {
     });
   }
 
+  isAuthenticated() {
+    return new Promise(resolve => {
+      onAuthStateChanged(auth, user => {
+        if (user) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    });
+  }
+
   getInitialState() {
     onAuthStateChanged(auth, user => {
       if (user) {
@@ -136,16 +149,16 @@ class FirebaseAuth {
           if (data) {
             globalState.set(data);
           } else {
-            globalState.set({ data: 'some initial data' });
+            globalState.set(INITIAL_STATE_VALUE);
           }
         });
 
         // return stateData;
       } else {
         if (localStorage.getItem('globalState')) {
-          globalState.set(localStorage.getItem('globalState'));
+          globalState.set(JSON.parse(localStorage.getItem('globalState')));
         } else {
-          globalState.set({ theme: 'dark' });
+          globalState.set(INITIAL_STATE_VALUE);
           globalState.writeToLocalStorage();
         }
       }

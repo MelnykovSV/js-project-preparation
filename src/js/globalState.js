@@ -1,25 +1,10 @@
 import databaseUtils from './firebaseDatabase';
 import authUtils from './firebaseAuth';
+import { INITIAL_STATE_VALUE } from '../constants';
 
 let instance;
 
-let globalStateObject = {
-  // favourite: [
-  //   { title: 'title1', test: 'text1' },
-  //   { title: 'title2', test: 'text2' },
-  //   { title: 'title3', test: 'text3' },
-  // ],
-  // read: [
-  //   { title: 'title1', test: 'text1' },
-  //   { title: 'title2', test: 'text2' },
-  //   { title: 'title3', test: 'text3' },
-  // ],
-  // theme: 'light',
-};
-
-// databaseUtils.getUserData().then(data => {
-//   globalStateObject = data;
-// });
+let globalStateObject = INITIAL_STATE_VALUE;
 
 class StateUtility {
   constructor() {
@@ -38,8 +23,8 @@ class StateUtility {
     globalStateObject = value;
   }
 
-  favourites() {
-    return globalStateObject.favourites;
+  favourite() {
+    return globalStateObject.favourite;
   }
   read() {
     return globalStateObject.read;
@@ -48,9 +33,11 @@ class StateUtility {
     return globalStateObject.read;
   }
 
-  setFavourites(value) {
-    globalStateObject.favourites = value;
+  async setFavourite(value) {
+    globalStateObject.favourite = value;
+    this.saveData();
   }
+
   setRead(value) {
     globalStateObject.read = value;
   }
@@ -60,6 +47,14 @@ class StateUtility {
 
   writeToLocalStorage() {
     localStorage.setItem('globalState', JSON.stringify(globalStateObject));
+  }
+
+  async saveData() {
+    const status = await authUtils.isAuthenticated();
+    console.log(status);
+    if (status) {
+      databaseUtils.writeUserData();
+    } else this.writeToLocalStorage();
   }
 }
 

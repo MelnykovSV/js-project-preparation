@@ -30,7 +30,54 @@ authComponent.addEventListener('click', e => {
   }
 });
 
-testButton.addEventListener('click', databaseUtils.getUserData);
+testButton.addEventListener('click', () => {
+  databaseUtils.writeUserData();
+});
 stateButton.addEventListener('click', () => {
   console.log(globalState.get());
+});
+
+const stateManipulator = document.querySelector('.state-manipulator');
+
+stateManipulator.addEventListener('click', e => {
+  switch (e.target.className) {
+    case 'add-to-favourite':
+      globalState.setFavourite([
+        ...globalState.favourite(),
+        {
+          title: 'some title',
+          text: 'some text',
+        },
+      ]);
+
+      break;
+    case 'remove-from-favourite':
+      const newState = globalState.favourite();
+      newState.pop();
+      globalState.setFavourite(newState);
+      break;
+    case 'add-to-read':
+      globalState.setRead([
+        ...globalState.read(),
+        {
+          title: 'some title',
+          text: 'some text',
+        },
+      ]);
+      break;
+    case 'remove-from-read':
+      const newState1 = globalState.read();
+      newState1.pop();
+      globalState.setRead(newState1);
+      break;
+    case 'light-theme':
+      globalState.setTheme('light');
+      break;
+    case 'dark-theme':
+      globalState.setTheme('dark');
+      break;
+    case 'other-theme':
+      globalState.setTheme('other');
+      break;
+  }
 });
