@@ -53,12 +53,6 @@ class FirebaseAuth {
       .then(userCredential => {
         // Signed in
         const user = userCredential.user;
-        // console.log(user);
-        // this.getInitialState();
-        // console.log('INITIAL_STATE_VALUE');
-        // console.log(INITIAL_STATE_VALUE);
-        // globalState.set(INITIAL_STATE_VALUE);
-        // console.log(globalState.get());
       })
       .catch(error => {
         const errorCode = error.code;
@@ -83,9 +77,6 @@ class FirebaseAuth {
       .then(userCredential => {
         // Signed in
         const user = userCredential.user;
-        console.log('signed in');
-        // this.getInitialState();
-        // ...
         databaseUtils.getUserData().then(data => {
           if (data) {
             globalState.set(data);
@@ -109,7 +100,6 @@ class FirebaseAuth {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
-        console.log('Sign-out successful');
         if (localStorage.getItem('globalState')) {
           globalState.set(JSON.parse(localStorage.getItem('globalState')));
         } else {
@@ -141,10 +131,8 @@ class FirebaseAuth {
         authComponent.querySelector(
           '.auth-component__user-email'
         ).textContent = `${user.email}`;
-        console.log('user is in system');
 
         authComponent.classList.add('signed-in');
-        // ...
       } else {
         // User is signed out
         if (localStorage.getItem('globalState')) {
@@ -154,10 +142,7 @@ class FirebaseAuth {
           globalState.writeToLocalStorage();
         }
 
-        console.log('user signied out');
-
         authComponent.classList.add('signed-out');
-        // ...
       }
     });
   }
@@ -174,51 +159,9 @@ class FirebaseAuth {
     });
   }
 
-  // getInitialState() {
-  //   onAuthStateChanged(auth, user => {
-  //     if (user) {
-  //       databaseUtils.getUserData().then(data => {
-  //         if (data) {
-  //           globalState.set(data);
-  //         } else {
-  //           globalState.set(INITIAL_STATE_VALUE);
-  //         }
-  //       });
-
-  //       // return stateData;
-  //     } else {
-  //       if (localStorage.getItem('globalState')) {
-  //         globalState.set(JSON.parse(localStorage.getItem('globalState')));
-  //       } else {
-  //         globalState.set(INITIAL_STATE_VALUE);
-  //         globalState.writeToLocalStorage();
-  //       }
-  //     }
-  //   });
-  // }
-
-  // async getCurrentUser() {
-  //   console.log(auth.currentUser);
-  //   const updatedProfile = await updateProfile(auth.currentUser, {
-  //     someValue: 'azazaza',
-  //   })
-  //     .then(() => {
-  //       // Profile updated!
-  //       // ...
-  //       console.log(auth.currentUser);
-  //     })
-  //     .catch(error => {
-  //       // An error occurred
-  //       // ...
-  //     });
-  //   return updatedProfile;
-  // }
-
   getCurrentUserId() {
     const user = auth.currentUser;
     if (user !== null) {
-      console.log('get id');
-      console.log(user);
       return user.uid;
     }
   }

@@ -14,7 +14,6 @@ const testButton = document.querySelector('.test-button');
 const stateButton = document.querySelector('.state-button');
 
 authUtils.checkUserStatus();
-// authUtils.getInitialState();
 
 signUpForm.addEventListener('submit', authUtils.signUp);
 signInForm.addEventListener('submit', authUtils.signIn);

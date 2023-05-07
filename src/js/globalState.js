@@ -21,8 +21,7 @@ class StateUtility {
 
   set(value) {
     globalStateObject = JSON.parse(JSON.stringify(value));
-    console.log('SET');
-    console.log(globalStateObject);
+
     this.saveData();
   }
 
@@ -56,7 +55,6 @@ class StateUtility {
 
   async saveData() {
     const status = await authUtils.isAuthenticated();
-    console.log(status);
     if (status) {
       databaseUtils.writeUserData();
     } else this.writeToLocalStorage();

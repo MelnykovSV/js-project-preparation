@@ -25,22 +25,11 @@ const app = initializeApp(firebaseConfig);
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
 
-// function writeUserData(userId, data) {
-//   const db = getDatabase();
-//   set(ref(db, 'users/' + userId), data);
-// }
-
-// writeUserData('k0Nkd7t83eNBhYRVJ8fLodvqv1X2', globalState.get());
-
 class FirebaseDatabase {
   writeUserData() {
     const userId = authUtils.getCurrentUserId();
 
     const data = globalState.get();
-
-    console.log('WRITTEN DATA');
-    console.log(data);
-
     const db = getDatabase();
     set(ref(db, 'users/' + userId), data);
   }
@@ -52,9 +41,6 @@ class FirebaseDatabase {
     const data = await get(ref(db, 'users/' + userId))
       .then(snapshot => {
         if (snapshot.exists()) {
-          console.log(`READ DATA FROM: ${userId}`);
-          console.log(snapshot.val());
-
           const result = { ...INITIAL_STATE_VALUE, ...snapshot.val() };
           return result;
         } else {
