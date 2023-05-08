@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, set, onValue, child, get } from 'firebase/database';
+import { getDatabase, ref, set, get } from 'firebase/database';
 import globalState from './globalState';
 
 import authUtils from './firebaseAuth';
@@ -23,20 +23,20 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Initialize Realtime Database and get a reference to the service
-const database = getDatabase(app);
+const db = getDatabase(app);
 
 class FirebaseDatabase {
   writeUserData() {
     const userId = authUtils.getCurrentUserId();
-
     const data = globalState.get();
-    const db = getDatabase();
+    // const db = getDatabase();
+
     set(ref(db, 'users/' + userId), data);
   }
 
   async getUserData() {
     const userId = authUtils.getCurrentUserId();
-    const db = getDatabase();
+    // const db = getDatabase();
 
     const data = await get(ref(db, 'users/' + userId))
       .then(snapshot => {

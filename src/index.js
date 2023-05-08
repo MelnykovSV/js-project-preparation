@@ -2,8 +2,6 @@ import globalState from './js/globalState';
 
 import authUtils from './js/firebaseAuth';
 
-import databaseUtils from './js/firebaseDatabase';
-
 import './js/firebaseDatabase';
 
 const authComponent = document.querySelector('.auth-component');
@@ -50,11 +48,12 @@ stateManipulator.addEventListener('click', e => {
       ]);
 
       break;
-    case 'remove-from-favourite':
+    case 'remove-from-favourite': {
       const newState = globalState.favourite();
       newState.pop();
       globalState.setFavourite(newState);
       break;
+    }
     case 'add-to-read':
       globalState.setRead([
         ...globalState.read(),
@@ -64,11 +63,12 @@ stateManipulator.addEventListener('click', e => {
         },
       ]);
       break;
-    case 'remove-from-read':
+    case 'remove-from-read': {
       const newState1 = globalState.read();
       newState1.pop();
       globalState.setRead(newState1);
       break;
+    }
     case 'light-theme':
       globalState.setTheme('light');
       break;

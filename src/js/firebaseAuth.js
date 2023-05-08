@@ -1,14 +1,13 @@
 // Import the functions you need from the SDKs you need
 import globalState from './globalState';
 import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
+// import { getAnalytics } from 'firebase/analytics';
 import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
-  updateProfile,
 } from 'firebase/auth';
 
 import databaseUtils from './firebaseDatabase';
@@ -34,7 +33,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app);
 
 //create user
 
@@ -53,9 +52,10 @@ class FirebaseAuth {
       .then(userCredential => {
         // Signed in
         const user = userCredential.user;
+        console.log(user);
       })
       .catch(error => {
-        const errorCode = error.code;
+        // const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorMessage);
 
@@ -77,6 +77,7 @@ class FirebaseAuth {
       .then(userCredential => {
         // Signed in
         const user = userCredential.user;
+        console.log(user);
         databaseUtils.getUserData().then(data => {
           if (data) {
             globalState.set(data);
@@ -86,7 +87,7 @@ class FirebaseAuth {
         });
       })
       .catch(error => {
-        const errorCode = error.code;
+        // const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorMessage);
       })
@@ -111,7 +112,7 @@ class FirebaseAuth {
       .catch(error => {
         // An error happened.
         authComponent.classList.add('signed-in');
-        console.log('An error happened');
+        console.log(error.message);
       });
   }
 
@@ -120,7 +121,7 @@ class FirebaseAuth {
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
+        // const uid = user.uid;
         databaseUtils.getUserData().then(data => {
           if (data) {
             globalState.set(data);
