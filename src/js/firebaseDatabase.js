@@ -41,7 +41,10 @@ class FirebaseDatabase {
     const data = await get(ref(db, 'users/' + userId))
       .then(snapshot => {
         if (snapshot.exists()) {
-          const result = { ...INITIAL_STATE_VALUE, ...snapshot.val() };
+          const result = {
+            ...INITIAL_STATE_VALUE,
+            ...snapshot.val(),
+          };
           return result;
         } else {
           console.log('No data available');
