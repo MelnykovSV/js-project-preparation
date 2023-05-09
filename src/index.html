@@ -14,7 +14,10 @@
     <!-- <link rel="manifest" href="./manifest.webmanifest" /> -->
 
     <link rel="stylesheet" href="./sass/main.scss" />
-    <script type="module" src="./index.js"></script>
+    <link
+      href="./../node_modules/toastr/build/toastr.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <!-- ❗️❗️❗️ Add partials like so for every page -->
@@ -25,5 +28,7 @@
     <button class="state-button">Global state</button>
 
     <include src="./partials/test-state-manipulator.html"></include>
+
+    <script type="module" src="./index.js"></script>
   </body>
 </html>

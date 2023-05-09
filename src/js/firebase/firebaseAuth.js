@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
-import globalState from './globalState';
+import globalState from '../globalState';
 import { initializeApp } from 'firebase/app';
-// import { getAnalytics } from 'firebase/analytics';
+
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -11,7 +11,8 @@ import {
 } from 'firebase/auth';
 
 import databaseUtils from './firebaseDatabase';
-import { INITIAL_STATE_VALUE } from '../constants';
+import { INITIAL_STATE_VALUE } from '../../constants';
+import { notification } from '../utils/notifications';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -44,56 +45,61 @@ const authComponent = document.querySelector('.auth-component');
 class FirebaseAuth {
   signUp(e) {
     e.preventDefault();
-    authComponent.classList.remove('signed-out');
     const email = e.target.elements.email.value;
     const password = e.target.elements.password.value;
+    if (email && password.length >= 6) {
+      authComponent.classList.remove('signed-out');
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(userCredential => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch(error => {
-        // const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(userCredential => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch(error => {
+          notification.error(
+            [error.code, error.message],
+            'Sorry, unexpected error occured'
+          );
 
-        authComponent.classList.add('signed-out');
-
-        // ..
-      })
-      .finally(() => {
-        e.target.classList.add('visually-hidden');
-      });
+          authComponent.classList.add('signed-out');
+        })
+        .finally(() => {
+          e.target.classList.add('visually-hidden');
+        });
+    }
   }
 
   signIn(e) {
     e.preventDefault();
-    authComponent.classList.remove('signed-out');
-    const email = e.target.elements.email.value;
-    const password = e.target.elements.password.value;
-    signInWithEmailAndPassword(auth, email, password)
-      .then(userCredential => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        databaseUtils.getUserData().then(data => {
-          if (data) {
-            globalState.set(data);
-          } else {
-            globalState.set(INITIAL_STATE_VALUE);
-          }
+    const email = e.target.elements.email.value.trim();
+    const password = e.target.elements.password.value.trim();
+    if (email && password.length >= 6) {
+      authComponent.classList.remove('signed-out');
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then(userCredential => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          // databaseUtils.getUserData().then(data => {
+          //   if (data) {
+          //     globalState.set(data);
+          //   } else {
+          //     globalState.set(INITIAL_STATE_VALUE);
+          //   }
+          // });
+        })
+        .catch(error => {
+          notification.error(
+            [error.code, error.message],
+            'Sorry, unexpected error occured'
+          );
+        })
+        .finally(() => {
+          e.target.classList.add('visually-hidden');
         });
-      })
-      .catch(error => {
-        // const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
-      })
-      .finally(() => {
-        e.target.classList.add('visually-hidden');
-      });
+    }
   }
 
   signOutUser() {
@@ -101,22 +107,24 @@ class FirebaseAuth {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
-        if (localStorage.getItem('globalState')) {
-          globalState.set(JSON.parse(localStorage.getItem('globalState')));
-        } else {
-          globalState.set(INITIAL_STATE_VALUE);
-
-          globalState.writeToLocalStorage();
-        }
+        // if (localStorage.getItem('globalState')) {
+        //   globalState.set(JSON.parse(localStorage.getItem('globalState')));
+        // } else {
+        //   globalState.set(INITIAL_STATE_VALUE);
+        //   globalState.writeToLocalStorage();
+        // }
       })
       .catch(error => {
         // An error happened.
         authComponent.classList.add('signed-in');
-        console.log(error.message);
+        notification.error(
+          [error.code, error.message],
+          'Sorry, unexpected error occured'
+        );
       });
   }
 
-  checkUserStatus() {
+  authSentry() {
     onAuthStateChanged(auth, user => {
       if (user) {
         // User is signed in, see docs for a list of available properties

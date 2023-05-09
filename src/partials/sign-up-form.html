@@ -2,7 +2,12 @@
   <h3>Sign Up</h3>
   <label class="sign-up-form__label">
     Email:
-    <input type="text" name="email" class="sign-up-form__input" />
+    <input
+      type="text"
+      pattern="^([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$"
+      name="email"
+      class="sign-up-form__input"
+    />
   </label>
 
   <label class="sign-up-form__label">

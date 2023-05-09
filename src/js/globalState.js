@@ -1,5 +1,5 @@
-import databaseUtils from './firebaseDatabase';
-import authUtils from './firebaseAuth';
+import databaseUtils from './firebase/firebaseDatabase';
+import authUtils from './firebase/firebaseAuth';
 import { INITIAL_STATE_VALUE } from '../constants';
 
 let instance;
@@ -21,7 +21,6 @@ class StateUtility {
 
   set(value) {
     globalStateObject = JSON.parse(JSON.stringify(value));
-
     this.saveData();
   }
 

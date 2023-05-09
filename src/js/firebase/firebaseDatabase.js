@@ -1,9 +1,9 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, set, get } from 'firebase/database';
-import globalState from './globalState';
-
+import globalState from '../globalState';
 import authUtils from './firebaseAuth';
-import { INITIAL_STATE_VALUE } from '../constants';
+import { INITIAL_STATE_VALUE } from '../../constants';
+import { notification } from '../utils/notifications';
 
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
@@ -51,7 +51,10 @@ class FirebaseDatabase {
         }
       })
       .catch(error => {
-        console.error(error);
+        notification.error(
+          [error.code, error.message],
+          'Sorry, unexpected error occured'
+        );
       });
     return data;
   }
