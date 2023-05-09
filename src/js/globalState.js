@@ -35,7 +35,7 @@ class StateUtility {
     return globalStateObject.read;
   }
 
-  async setFavourite(value) {
+  setFavourite(value) {
     globalStateObject.favourite = value;
     this.saveData();
   }
